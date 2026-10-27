@@ -1,0 +1,11 @@
+{
+  "seed": 42,
+  "customer_count": 50,
+  "session_count": 200,
+  "event_count": 560,
+  "files": [
+    "customers.csv",
+    "sessions.csv",
+    "journey_events.csv"
+  ]
+}

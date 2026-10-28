@@ -1,6 +1,7 @@
 
-const API_BASE_URL = "http://127.0.0.1:8000";
-
+//const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL =
+  "https://customer-journey-pipeline.onrender.com";
 let isRefreshing = false;
 
 function formatNumber(value) {

@@ -1,7 +1,12 @@
 
 import pandas as pd
 
-from src.validator import ( validate_events, validate_pages, validate_products,)
+from src.validator import (
+    validate_events,
+    validate_pages,
+    validate_products,
+)
+
 
 def test_event_with_wrong_customer_is_quarantined():
     sessions = pd.DataFrame([
@@ -30,7 +35,17 @@ def test_event_with_wrong_customer_is_quarantined():
         }
     ])
 
-    valid, invalid = validate_events(events, sessions, customers)
+    pages = pd.DataFrame([
+        {"page_id": "PAG-000001", "page_type": "product"}
+    ])
+
+    products = pd.DataFrame([
+        {"product_id": "PRD-000001"}
+    ])
+
+    valid, invalid = validate_events(
+        events, sessions, customers, pages, products
+    )
 
     assert len(valid) == 0
     assert len(invalid) == 1
@@ -63,11 +78,22 @@ def test_event_outside_session_is_quarantined():
         }
     ])
 
-    valid, invalid = validate_events(events, sessions, customers)
+    pages = pd.DataFrame([
+        {"page_id": "PAG-000001", "page_type": "product"}
+    ])
+
+    products = pd.DataFrame([
+        {"product_id": "PRD-000001"}
+    ])
+
+    valid, invalid = validate_events(
+        events, sessions, customers, pages, products
+    )
 
     assert len(valid) == 0
     assert len(invalid) == 1
     assert invalid.iloc[0]["event_id"] == "EVT-002"
+
 
 def test_valid_pages_pass_validation():
     pages = pd.DataFrame([

@@ -1,0 +1,374 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Customer Journey Analytics dashboard">
+    <title>Journey Analytics</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+    <div class="app-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="#overview" class="brand">
+                <span class="brand-icon">J</span>
+                <span>
+                    <strong>Journey Analytics</strong>
+                    <small>Customer data platform</small>
+                </span>
+            </a>
+
+            <div class="nav-label">WORKSPACE</div>
+
+            <nav class="sidebar-nav">
+                <a href="#overview" class="nav-link active">
+                    <span>▦</span> Overview
+                </a>
+                <a href="#analytics" class="nav-link">
+                    <span>↗</span> Analytics
+                </a>
+                <a href="#data-explorer" class="nav-link">
+                    <span>⌕</span> Data explorer
+                </a>
+                <a href="#data-quality" class="nav-link">
+                    <span>✓</span> Data quality
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <span class="status-dot"></span>
+                <span id="connection-status">Connecting to API...</span>
+                <small>Local development</small>
+            </div>
+        </aside>
+
+        <!-- Main application -->
+        <main class="main-content">
+
+            <!-- Header -->
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">CUSTOMER INTELLIGENCE</p>
+                    <h1>Journey overview</h1>
+                    <p class="page-subtitle">
+                        Understand how sessions progress through the customer journey.
+                    </p>
+                </div>
+
+                <button id="refresh-dashboard" class="secondary-button" type="button">
+                    ↻ Refresh data
+                </button>
+            </header>
+
+            <!-- Overview -->
+            <section id="overview" class="content-section">
+                <div class="section-heading">
+                    <div>
+                        <h2>Performance overview</h2>
+                        <p>Metrics from your current pipeline output.</p>
+                    </div>
+                </div>
+
+                <div class="kpi-grid">
+                    <article class="kpi-card">
+                        <div class="kpi-heading">
+                            <span>Total sessions</span>
+                            <span class="kpi-icon">◷</span>
+                        </div>
+                        <strong id="total-sessions" class="kpi-value">—</strong>
+                        <p class="kpi-description">Sessions in the current dataset</p>
+                    </article>
+
+                    <article class="kpi-card">
+                        <div class="kpi-heading">
+                            <span>Converted sessions</span>
+                            <span class="kpi-icon">✓</span>
+                        </div>
+                        <strong id="converted-sessions" class="kpi-value">—</strong>
+                        <p class="kpi-description">Sessions counted as converted</p>
+                    </article>
+
+                    <article class="kpi-card">
+                        <div class="kpi-heading">
+                            <span>Conversion rate</span>
+                            <span class="kpi-icon">↗</span>
+                        </div>
+                        <strong id="conversion-rate" class="kpi-value">—</strong>
+                        <p class="kpi-description">Share of sessions converted</p>
+                    </article>
+
+                    <article class="kpi-card">
+                        <div class="kpi-heading">
+                            <span>Support contact rate</span>
+                            <span class="kpi-icon">◎</span>
+                        </div>
+                        <strong id="support-rate" class="kpi-value">—</strong>
+                        <p class="kpi-description">Sessions with support contact</p>
+                    </article>
+                </div>
+
+                <article class="panel">
+                    <div class="section-heading">
+                        <div>
+                            <h2>Journey funnel</h2>
+                            <p>Browse → Product interest → Purchase</p>
+                        </div>
+                    </div>
+
+                    <div id="funnel-message" class="message">
+                        Loading funnel data...
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="funnel-chart" hidden></canvas>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <div class="section-heading">
+                        <div>
+                            <h2>Conversion insights</h2>
+                            <p>Identify where sessions drop out of the journey.</p>
+                        </div>
+                    </div>
+
+                    <div class="insights-grid">
+                        <div class="insight-card">
+                            <span class="insight-label">Overall conversion</span>
+                            <strong id="insight-conversion-rate">—</strong>
+                            <span class="insight-detail">
+                                Purchases divided by browse sessions
+                            </span>
+                        </div>
+
+                        <div class="insight-card">
+                            <span class="insight-label">Browse → Product drop-off</span>
+                            <strong id="dropoff-product">—</strong>
+                            <span id="dropoff-product-count" class="insight-detail">
+                                Loading...
+                            </span>
+                        </div>
+
+                        <div class="insight-card">
+                            <span class="insight-label">Product → Purchase drop-off</span>
+                            <strong id="dropoff-purchase">—</strong>
+                            <span id="dropoff-purchase-count" class="insight-detail">
+                                Loading...
+                            </span>
+                        </div>
+
+                        <div class="insight-card">
+                            <span class="insight-label">Sessions not converted</span>
+                            <strong id="insight-not-converted">—</strong>
+                            <span class="insight-detail">
+                                Browse sessions without a purchase
+                            </span>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Analytics -->
+            <section id="analytics" class="content-section">
+                <div class="section-heading">
+                    <div>
+                        <h2>Analytics</h2>
+                        <p>Explore additional customer journey dimensions.</p>
+                    </div>
+                </div>
+
+                <div class="feature-grid">
+                    <article class="panel feature-card" id="journey-outcomes-card">
+    <span class="feature-icon">▤</span>
+    <h3>Journey outcomes</h3>
+    <p>
+        Compare converted, support-required, and
+        non-converted sessions.
+    </p>
+
+    <p id="outcomes-message">Loading journey outcomes...</p>
+
+    <div class="chart-container">
+        <canvas id="outcomes-chart"></canvas>
+    </div>
+
+    <div id="outcomes-breakdown"></div>
+</article>
+                   
+<article class="panel feature-card" id="device-performance-card">
+    <span class="feature-icon">▥</span>
+    <h3>Device performance</h3>
+    <p>Compare session volumes and conversion rates by device.</p>
+    <p id="devices-message" class="message">Loading device performance...</p>
+    <div class="chart-container">
+        <canvas id="devices-chart"></canvas>
+    </div>
+    <div id="devices-breakdown" class="quality-breakdown"></div>
+</article>
+
+<article class="panel feature-card" id="page-product-card">
+    <span class="feature-icon">▧</span>
+    <h3>Page and product performance</h3>
+    <p>Investigate page engagement and product interest using event data.</p>
+
+    <h4>Top pages</h4>
+    <p id="pages-message" class="message">Loading page performance...</p>
+    <div id="pages-table" class="table-wrapper"></div>
+
+    <h4>Top products</h4>
+    <p id="products-message" class="message">Loading product performance...</p>
+    <div id="products-table" class="table-wrapper"></div>
+</article>
+
+<article class="panel feature-card" id="time-trends-card">
+    <span class="feature-icon">⌁</span>
+    <h3>Time-based trends</h3>
+    <p>Track sessions and conversions over time.</p>
+
+    <label for="trend-interval">Group by</label>
+    <select id="trend-interval">
+        <option value="day">Day</option>
+        <option value="week">Week</option>
+        <option value="month">Month</option>
+    </select>
+
+    <p id="trends-message" class="message">Loading trends...</p>
+    <div class="chart-container">
+        <canvas id="trends-chart"></canvas>
+    </div>
+</article>
+
+
+                </div>
+            </section>
+
+            <!-- Data explorer -->
+            <section id="data-explorer" class="content-section">
+                <div class="section-heading">
+                    <div>
+                        <h2>Data explorer</h2>
+                        <p>Inspect sessions and individual journey events.</p>
+                    </div>
+                </div>
+
+                
+<article class="panel">
+    <div class="explorer-toolbar">
+        <div>
+            <h3>Sessions and events</h3>
+            <p>Search sessions, filter results, and inspect their event timelines.</p>
+        </div>
+    </div>
+
+    <div class="explorer-filters">
+        <label for="session-search">Search session or customer ID</label>
+        <input
+            id="session-search"
+            type="search"
+            placeholder="e.g. SES-2026-000001"
+        />
+
+        <label for="session-device">Device</label>
+        <select id="session-device">
+            <option value="">All devices</option>
+            <option value="desktop">Desktop</option>
+            <option value="mobile">Mobile</option>
+            <option value="tablet">Tablet</option>
+        </select>
+
+        <label for="session-outcome">Outcome</label>
+        <select id="session-outcome">
+            <option value="">All outcomes</option>
+            <option value="converted">Converted</option>
+            <option value="support_required">Support required</option>
+            <option value="no_conversion">Non-converted</option>
+        </select>
+
+        <button id="search-sessions" class="secondary-button" type="button">
+            Search
+        </button>
+    </div>
+
+    <p id="sessions-message" class="message">Loading sessions...</p>
+    <div id="sessions-table" class="table-wrapper"></div>
+
+    <div class="pagination-controls">
+        <button id="sessions-previous" class="secondary-button" type="button">
+            Previous
+        </button>
+        <span id="sessions-page">Page 1</span>
+        <button id="sessions-next" class="secondary-button" type="button">
+            Next
+        </button>
+    </div>
+
+    <div id="session-events-panel" class="session-events-panel" hidden>
+        <h3 id="selected-session-title">Session events</h3>
+        <p id="session-events-message"></p>
+        <div id="session-events-table" class="table-wrapper"></div>
+    </div>
+</article>
+
+            </section>
+
+            <!-- Data quality -->
+            <section id="data-quality" class="content-section">
+                <div class="section-heading">
+                    <div>
+                        <h2>Data quality center</h2>
+                        <p>Validation results from staged and quarantined records.</p>
+                    </div>
+                </div>
+
+                <article class="panel">
+                    <div class="section-heading">
+                        <div>
+                            <h3>Overall validation status</h3>
+                            <p>Summary from the latest available pipeline output.</p>
+                        </div>
+                        <span class="quality-indicator"></span>
+                    </div>
+
+                    <p id="quality-message" class="message">
+                        Loading data quality...
+                    </p>
+
+                    <div id="quality-breakdown" class="quality-breakdown"></div>
+                </article>
+
+                <div class="feature-grid quality-feature-grid">
+                    <article class="panel feature-card">
+                        <span class="feature-icon">✓</span>
+                        <h3>Validation summary</h3>
+                        <p>Review accepted and quarantined record counts.</p>
+                        <span class="feature-status">Connected</span>
+                    </article>
+
+                    <article class="panel feature-card">
+                        <span class="feature-icon">!</span>
+                        <h3>Anomaly investigation</h3>
+                        <p>
+                            Inspect labelled anomalies and event ingestion
+                            delays when those datasets are available.
+                        </p>
+                        <span class="feature-status">Data generation pending</span>
+                    </article>
+                </div>
+            </section>
+
+            <footer class="app-footer">
+                <span>Customer Journey Analytics</span>
+                <span>Metrics are based on the currently generated dataset.</span>
+            </footer>
+
+        </main>
+    </div>
+</body>
+</html>

@@ -2,12 +2,15 @@
 import json
 from pathlib import Path
 
+from flask import sessions
 import pandas as pd
 
 from src.generator import (
     generate_customers,
     generate_sessions,
     generate_events,
+     generate_pages,
+    generate_products,
 )
 from src.pipeline import run_validation
 
@@ -19,28 +22,42 @@ def main():
     raw_dir = project_root / "data" / "raw"
     raw_dir.mkdir(parents=True, exist_ok=True)
 
-    # Load configuration.
+    # Load configuration
     with open(config_path, "r", encoding="utf-8") as file:
         config = json.load(file)
 
     seed = config["seed"]
     customer_count = config["customer_count"]
     session_count = config["session_count"]
+    pages = generate_pages()
+    products = generate_products(
+    product_count=20,
+    seed=seed,
+    )
 
     # Generate synthetic data.
     customers = generate_customers(customer_count, seed=seed)
     sessions = generate_sessions(customers, session_count, seed=seed)
-    events = generate_events(sessions, seed=seed)
-
+    events = generate_events(
+        sessions,
+        pages=pages,
+        products=products,
+        seed=seed,
+    )
     # Convert records into DataFrames.
     customers_df = pd.DataFrame(customers)
     sessions_df = pd.DataFrame(sessions)
     events_df = pd.DataFrame(events)
 
+    pages_df = pd.DataFrame(pages)
+    products_df = pd.DataFrame(products)
+
     # Save raw datasets.
     customers_df.to_csv(raw_dir / "customers.csv", index=False)
     sessions_df.to_csv(raw_dir / "sessions.csv", index=False)
     events_df.to_csv(raw_dir / "journey_events.csv", index=False)
+    pages_df.to_csv(raw_dir / "pages.csv", index=False)
+    products_df.to_csv(raw_dir / "products.csv", index=False)
 
     # Save a run manifest.
     manifest = {
@@ -48,10 +65,14 @@ def main():
         "customer_count": len(customers),
         "session_count": len(sessions),
         "event_count": len(events),
+        "page_count": len(pages),
+        "product_count": len(products),
         "files": [
             "customers.csv",
             "sessions.csv",
             "journey_events.csv",
+            "pages.csv",
+            "products.csv",
         ],
     }
 
@@ -86,6 +107,8 @@ def main():
     else:
         print("\nWarning: journey_metrics.csv was not generated.")
 
+    print(f"Pages: {len(pages_df)}")
+    print(f"Products: {len(products_df)}")
 
 if __name__ == "__main__":
     main()

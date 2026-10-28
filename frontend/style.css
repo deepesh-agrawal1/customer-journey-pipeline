@@ -1,0 +1,827 @@
+
+/* =========================
+   1. Theme and base styles
+========================= */
+
+:root {
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    color: #1f2937;
+    background: #f5f7fb;
+
+    --primary: #536fe5;
+    --primary-light: #edf0ff;
+    --text: #1f2937;
+    --muted: #748094;
+    --border: #e7ebf2;
+    --surface: #ffffff;
+    --sidebar: #172235;
+    --sidebar-muted: #a6b2c5;
+    --success: #198754;
+    --danger: #d64545;
+    --radius: 14px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 24px;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+p {
+    margin-top: 0;
+}
+
+h1 {
+    margin-bottom: 8px;
+    font-size: clamp(25px, 3vw, 32px);
+    letter-spacing: -0.8px;
+}
+
+h2 {
+    margin-bottom: 7px;
+    font-size: 19px;
+    letter-spacing: -0.3px;
+}
+
+h3 {
+    margin-bottom: 9px;
+    font-size: 16px;
+}
+
+p {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+
+/* =========================
+   2. Application layout
+========================= */
+
+.app-layout {
+    min-height: 100vh;
+}
+
+.sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    padding: 26px 18px 20px;
+    overflow-y: auto;
+    color: #ffffff;
+    background: var(--sidebar);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 5px 7px 32px;
+}
+
+.brand-icon {
+    display: grid;
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border-radius: 12px;
+    background: var(--primary);
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.brand strong,
+.brand small {
+    display: block;
+}
+
+.brand strong {
+    font-size: 14px;
+}
+
+.brand small {
+    margin-top: 5px;
+    color: var(--sidebar-muted);
+    font-size: 11px;
+}
+
+.nav-label {
+    padding: 0 10px 12px;
+    color: #8594ab;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+}
+
+.sidebar-nav {
+    display: grid;
+    gap: 7px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 11px 12px;
+    border-radius: 9px;
+    color: var(--sidebar-muted);
+    font-size: 13px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.nav-link > span {
+    width: 19px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #ffffff;
+    background: #2a3a54;
+}
+
+.nav-link.active {
+    box-shadow: inset 3px 0 var(--primary);
+}
+
+.sidebar-footer {
+    display: grid;
+    grid-template-columns: 9px 1fr;
+    align-items: center;
+    gap: 5px 9px;
+    margin-top: auto;
+    padding: 17px 8px 0;
+    border-top: 1px solid #344156;
+    color: #e0e7f1;
+    font-size: 11px;
+}
+
+.status-dot,
+.quality-indicator {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #98a2b3;
+}
+
+.sidebar-footer small {
+    grid-column: 2;
+    color: #8d9bb0;
+}
+
+.main-content {
+    min-width: 0;
+    margin-left: 250px;
+    padding: 34px clamp(20px, 4vw, 48px) 24px;
+}
+
+
+/* =========================
+   3. Header and buttons
+========================= */
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.eyebrow {
+    margin-bottom: 9px;
+    color: var(--primary);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.page-subtitle {
+    max-width: 620px;
+    margin-bottom: 0;
+    font-size: 13px;
+}
+
+.secondary-button {
+    flex-shrink: 0;
+    padding: 11px 15px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    color: var(--text);
+    background: var(--surface);
+    font-size: 12px;
+    font-weight: 600;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.secondary-button:hover {
+    border-color: #b7c3ef;
+    background: var(--primary-light);
+}
+
+.secondary-button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+
+/* =========================
+   4. Page sections
+========================= */
+
+.content-section {
+    margin-bottom: 38px;
+    scroll-margin-top: 25px;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.section-heading p {
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+.content-section > .section-heading {
+    margin-bottom: 20px;
+}
+
+
+/* =========================
+   5. KPI cards
+========================= */
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.kpi-card {
+    min-width: 0;
+    padding: 19px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: 0 3px 12px rgba(25, 42, 70, 0.025);
+}
+
+.kpi-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.kpi-icon {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 10px;
+    color: var(--primary);
+    background: var(--primary-light);
+    font-size: 17px;
+}
+
+.kpi-value {
+    display: block;
+    margin-top: 16px;
+    color: var(--text);
+    font-size: clamp(24px, 2.3vw, 32px);
+    font-weight: 750;
+    letter-spacing: -0.9px;
+    overflow-wrap: anywhere;
+}
+
+.kpi-description {
+    margin: 8px 0 0;
+    font-size: 11px;
+}
+
+
+/* =========================
+   6. Panels and charts
+========================= */
+
+.panel {
+    min-width: 0;
+    margin-bottom: 20px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: 0 3px 12px rgba(25, 42, 70, 0.025);
+}
+
+.panel > .section-heading {
+    margin-bottom: 20px;
+}
+
+.panel > .section-heading:last-child {
+    margin-bottom: 0;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    min-height: 180px;
+    max-height: 340px;
+}
+
+.chart-container canvas {
+    display: block;
+    width: 100% !important;
+    max-height: 340px;
+}
+
+.message {
+    margin: 0;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+
+/* =========================
+   7. Conversion insights
+========================= */
+
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.insight-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 9px;
+    min-width: 0;
+    padding: 19px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: #ffffff;
+}
+
+.insight-label {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.insight-card strong {
+    color: var(--text);
+    font-size: 29px;
+    font-weight: 750;
+    letter-spacing: -0.8px;
+    overflow-wrap: anywhere;
+}
+
+.insight-detail {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   8. Analytics feature cards
+========================= */
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.feature-card {
+    margin-bottom: 0;
+    padding: 23px;
+}
+
+.feature-icon {
+    display: grid;
+    width: 39px;
+    height: 39px;
+    margin-bottom: 17px;
+    place-items: center;
+    border-radius: 11px;
+    color: var(--primary);
+    background: var(--primary-light);
+    font-size: 21px;
+}
+
+.feature-card h3 {
+    margin-bottom: 8px;
+}
+
+.feature-card p {
+    margin-bottom: 17px;
+    font-size: 12px;
+}
+
+.feature-status {
+    display: inline-block;
+    padding: 6px 9px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--muted);
+    background: #f8f9fc;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+
+/* =========================
+   9. Data explorer
+========================= */
+
+.explorer-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.explorer-toolbar h3 {
+    margin-bottom: 7px;
+}
+
+.explorer-toolbar p {
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 260px;
+    padding: 28px 16px;
+    text-align: center;
+}
+
+.empty-state-icon {
+    display: grid;
+    width: 53px;
+    height: 53px;
+    margin-bottom: 17px;
+    place-items: center;
+    border-radius: 15px;
+    color: var(--primary);
+    background: var(--primary-light);
+    font-size: 27px;
+}
+
+.empty-state h3 {
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    max-width: 390px;
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+
+/* =========================
+   10. Data quality
+========================= */
+
+.quality-indicator {
+    flex-shrink: 0;
+    width: 11px;
+    height: 11px;
+    background: var(--success);
+}
+
+.quality-breakdown {
+    display: grid;
+    gap: 10px;
+    margin-top: 19px;
+}
+
+.quality-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 13px 15px;
+    border: 1px solid #edf0f5;
+    border-radius: 9px;
+    background: #fafbfe;
+    font-size: 12px;
+}
+
+.quality-row span:first-child {
+    color: var(--text);
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.quality-row span:last-child {
+    color: var(--success);
+    font-weight: 700;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.quality-feature-grid {
+    margin-top: 4px;
+}
+
+
+/* =========================
+   11. Footer
+========================= */
+
+.app-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 20px 0 4px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.app-footer span:last-child {
+    text-align: right;
+}
+
+
+/* =========================
+   12. Responsive layouts
+========================= */
+
+@media (min-width: 1500px) {
+    .main-content {
+        max-width: 1700px;
+        margin-right: auto;
+    }
+}
+
+@media (max-width: 1200px) {
+    .sidebar {
+        width: 220px;
+    }
+
+    .main-content {
+        margin-left: 220px;
+        padding-right: 25px;
+        padding-left: 25px;
+    }
+
+    .kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 850px) {
+    .sidebar {
+        position: static;
+        width: 100%;
+        padding: 14px 18px;
+    }
+
+    .brand {
+        padding: 0 3px 16px;
+    }
+
+    .nav-label,
+    .sidebar-footer {
+        display: none;
+    }
+
+    .sidebar-nav {
+        display: flex;
+        gap: 7px;
+        padding-bottom: 2px;
+        overflow-x: auto;
+    }
+
+    .nav-link {
+        flex: 0 0 auto;
+        min-height: 39px;
+        padding: 9px 11px;
+        font-size: 11px;
+    }
+
+    .nav-link > span {
+        font-size: 15px;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 25px 20px;
+    }
+
+    .topbar {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 560px) {
+    .main-content {
+        padding: 21px 13px;
+    }
+
+    .topbar {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .secondary-button {
+        width: 100%;
+    }
+
+    .kpi-grid,
+    .insights-grid,
+    .feature-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .kpi-card {
+        padding: 16px;
+    }
+
+    .panel {
+        padding: 17px;
+        margin-bottom: 15px;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+    }
+
+    .insight-card {
+        padding: 16px;
+    }
+
+    .app-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .app-footer span:last-child {
+        text-align: left;
+    }
+
+    .quality-row {
+        padding: 12px 10px;
+        font-size: 11px;
+    }
+}
+#journey-outcomes-card .chart-container {
+  position: relative;
+  height: 280px;
+}
+
+/* Analytics charts and tables */
+#device-performance-card .chart-container,
+#time-trends-card .chart-container {
+    position: relative;
+    height: 260px;
+    margin: 16px 0;
+}
+
+#journey-outcomes-card .chart-container {
+    position: relative;
+    height: 260px;
+    margin: 16px 0;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin: 12px 0 20px;
+}
+
+.table-wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.table-wrapper th,
+.table-wrapper td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+    text-align: left;
+    white-space: nowrap;
+}
+
+.table-wrapper th {
+    font-weight: 600;
+}
+
+.explorer-filters {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.explorer-filters label {
+    align-self: end;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.explorer-filters input,
+.explorer-filters select,
+#trend-interval {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding: 10px;
+    border: 1px solid var(--border-color, #d1d5db);
+    border-radius: 8px;
+    background: var(--card-background, #fff);
+    color: inherit;
+}
+
+.explorer-filters button {
+    align-self: end;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.pagination-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.session-events-panel {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color, #e5e7eb);
+}
+
+@media (max-width: 700px) {
+    .explorer-filters {
+        grid-template-columns: 1fr;
+    }
+
+    .pagination-controls {
+        flex-wrap: wrap;
+    }
+}

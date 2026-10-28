@@ -76,4 +76,33 @@ def test_session_without_events_still_gets_outcome():
 
     assert len(result) == 1
     assert result.iloc[0]["outcome"] == "no_conversion"
+def test_purchase_before_product_interest_is_not_a_conversion():
+    sessions = pd.DataFrame([
+        {
+            "session_id": "SES-2026-000005",
+            "customer_id": "CUS-000005",
+        }
+    ])
 
+    events = pd.DataFrame([
+        {
+            "session_id": "SES-2026-000005",
+            "event_type": "page_view",
+            "event_timestamp": "2026-01-01T10:00:00Z",
+        },
+        {
+            "session_id": "SES-2026-000005",
+            "event_type": "purchase",
+            "event_timestamp": "2026-01-01T10:01:00Z",
+        },
+        {
+            "session_id": "SES-2026-000005",
+            "event_type": "item_viewed",
+            "event_timestamp": "2026-01-01T10:02:00Z",
+        },
+    ])
+
+    result = derive_journey_outcomes(sessions, events)
+
+    assert result.iloc[0]["outcome"] == "no_conversion"
+    assert result.iloc[0]["reason"] == "no_purchase_event_detected"

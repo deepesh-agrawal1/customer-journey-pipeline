@@ -2,10 +2,14 @@
   "seed": 42,
   "customer_count": 50,
   "session_count": 200,
-  "event_count": 560,
+  "event_count": 549,
+  "page_count": 6,
+  "product_count": 20,
   "files": [
     "customers.csv",
     "sessions.csv",
-    "journey_events.csv"
+    "journey_events.csv",
+    "pages.csv",
+    "products.csv"
   ]
 }

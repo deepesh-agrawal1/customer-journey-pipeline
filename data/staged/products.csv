@@ -1,0 +1,21 @@
+product_id,product_name,category,unit_price,currency,lifecycle_status
+PRD-000001,Product 001,home,214.67,USD,active
+PRD-000002,Product 002,home,50.12,USD,active
+PRD-000003,Product 003,home,20.58,USD,active
+PRD-000004,Product 004,books,15.41,USD,active
+PRD-000005,Product 005,home,405.75,USD,active
+PRD-000006,Product 006,home,429.16,USD,active
+PRD-000007,Product 007,electronics,450.57,USD,active
+PRD-000008,Product 008,electronics,76.16,USD,active
+PRD-000009,Product 009,clothing,113.4,USD,active
+PRD-000010,Product 010,books,46.73,USD,active
+PRD-000011,Product 011,books,79.97,USD,active
+PRD-000012,Product 012,electronics,462.25,USD,active
+PRD-000013,Product 013,clothing,167.13,USD,active
+PRD-000014,Product 014,home,389.8,USD,active
+PRD-000015,Product 015,home,55.94,USD,active
+PRD-000016,Product 016,electronics,20.4,USD,active
+PRD-000017,Product 017,home,165.32,USD,active
+PRD-000018,Product 018,books,352.6,USD,active
+PRD-000019,Product 019,accessories,333.75,USD,active
+PRD-000020,Product 020,accessories,407.02,USD,active

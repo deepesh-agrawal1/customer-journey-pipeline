@@ -30,6 +30,23 @@ EVENT_COLUMNS = {
     "source",
 }
 
+PAGE_COLUMNS = {
+    "page_id",
+    "page_name",
+    "page_type",
+    "channel",
+    "lifecycle_status",
+}
+
+PRODUCT_COLUMNS = {
+    "product_id",
+    "product_name",
+    "category",
+    "unit_price",
+    "currency",
+    "lifecycle_status",
+}
+
 
 def validate_columns(
     df: pd.DataFrame,
@@ -94,6 +111,8 @@ def validate_events(
     df: pd.DataFrame,
     sessions: pd.DataFrame,
     customers: pd.DataFrame,
+    pages: pd.DataFrame,
+    products: pd.DataFrame,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Validate events and their session/customer references."""
     df = df.copy()
@@ -128,6 +147,39 @@ def validate_events(
     invalid |= (
         df["event_type"].isna()
         | df["event_type"].astype(str).str.strip().eq("")
+    )
+        # Validate page and product foreign keys.
+    page_ids = set(pages["page_id"].dropna())
+    product_ids = set(products["product_id"].dropna())
+
+    page_id = df["page_id"]
+    product_id = df["product_id"]
+
+    # Non-empty IDs must reference existing records.
+    invalid |= (
+        page_id.notna()
+        & page_id.astype(str).str.strip().ne("")
+        & ~page_id.isin(page_ids)
+    )
+
+    invalid |= (
+        product_id.notna()
+        & product_id.astype(str).str.strip().ne("")
+        & ~product_id.isin(product_ids)
+    )
+
+    # item_viewed events must have both a product and a product page.
+    product_page_ids = set(
+        pages.loc[pages["page_type"].eq("product"), "page_id"]
+    )
+
+    item_viewed = df["event_type"].eq("item_viewed")
+
+    invalid |= item_viewed & ~page_id.isin(product_page_ids)
+    invalid |= item_viewed & (
+        product_id.isna()
+        | product_id.astype(str).str.strip().eq("")
+        | ~product_id.isin(product_ids)
     )
 
     # 5. Validate timestamps.
@@ -168,5 +220,78 @@ def validate_events(
         | (sequence < 1)
         | (sequence % 1 != 0)
     )
+
+    return df.loc[~invalid].copy(), df.loc[invalid].copy()
+
+def validate_pages(
+    df: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Validate page master records."""
+    df = df.copy()
+
+    missing_columns = validate_columns(df, PAGE_COLUMNS)
+    if missing_columns:
+        raise ValueError(f"Pages missing columns: {missing_columns}")
+
+    invalid = (
+        df["page_id"].isna()
+        | df["page_id"].duplicated(keep=False)
+    )
+
+    for column in ["page_name", "page_type", "channel", "lifecycle_status"]:
+        invalid |= (
+            df[column].isna()
+            | df[column].astype(str).str.strip().eq("")
+        )
+
+    invalid |= ~df["page_type"].isin([
+        "landing", "search", "product",
+        "cart", "checkout", "confirmation",
+    ])
+
+    invalid |= ~df["channel"].isin(["web", "app", "support"])
+
+    invalid |= ~df["lifecycle_status"].isin([
+        "active", "inactive", "retired",
+    ])
+
+    return df.loc[~invalid].copy(), df.loc[invalid].copy()
+
+def validate_products(
+    df: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Validate product master records."""
+    df = df.copy()
+
+    missing_columns = validate_columns(df, PRODUCT_COLUMNS)
+    if missing_columns:
+        raise ValueError(f"Products missing columns: {missing_columns}")
+
+    invalid = (
+        df["product_id"].isna()
+        | df["product_id"].duplicated(keep=False)
+    )
+
+    for column in [
+        "product_name", "category", "currency", "lifecycle_status",
+    ]:
+        invalid |= (
+            df[column].isna()
+            | df[column].astype(str).str.strip().eq("")
+        )
+
+    invalid |= ~df["category"].isin([
+        "electronics", "clothing", "home",
+        "books", "accessories",
+    ])
+
+    invalid |= ~df["currency"].isin(["USD", "INR", "GBP", "EUR", "CAD"])
+
+    invalid |= ~df["lifecycle_status"].isin([
+        "active", "inactive", "discontinued",
+    ])
+
+    price = pd.to_numeric(df["unit_price"], errors="coerce")
+    invalid |= price.isna() | (price < 0)
 
     return df.loc[~invalid].copy(), df.loc[invalid].copy()

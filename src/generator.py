@@ -146,6 +146,8 @@ def generate_sessions(
 
 def generate_events(
     sessions: list[dict],
+    pages: list[dict],
+    products: list[dict],
     seed: int = 42,
 ) -> list[dict]:
     """Generate synthetic journey events for existing sessions."""
@@ -184,6 +186,29 @@ def generate_events(
         ):
             event_time = started_at + timedelta(seconds=offset)
 
+            page_id = None
+            product_id = None
+
+            if event_type == "page_view":
+                page = rng.choice(pages)
+                page_id = page["page_id"]
+
+            elif event_type == "item_viewed":
+                page = next(
+                    p for p in pages
+                    if p["page_type"] == "product"
+                )
+                product_id = rng.choice(products)["product_id"]
+                page_id = page["page_id"]
+
+            elif event_type == "purchase":
+                page = next(
+                    p for p in pages
+                    if p["page_type"] == "confirmation"
+                )
+                product_id = rng.choice(products)["product_id"]
+                page_id = page["page_id"]
+
             events.append({
                 "event_id": (
                     f"EVT-{session['session_id']}-{position:06d}"
@@ -194,6 +219,8 @@ def generate_events(
                 "event_timestamp": event_time.isoformat(),
                 "event_sequence": position,
                 "source": "synthetic_web",
+                "page_id": page_id,
+                "product_id": product_id,
             })
 
     return events

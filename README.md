@@ -286,3 +286,6 @@ The pipeline is designed around CSV-based processing, allowing evaluators to ins
 GitHub: [deepesh-agrawal1](https://github.com/deepesh-agrawal1)
 
 Portfolio: [deepesh.codes](https://deepesh.codes)
+
+//For evaluation purpose all the code is written through vibe coding so u can see many unrequired code which can be optimized and written using short and smaller way
+

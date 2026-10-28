@@ -825,3 +825,112 @@ p {
         flex-wrap: wrap;
     }
 }
+
+/* AI insights and anomaly detection */
+
+.primary-button {
+    flex-shrink: 0;
+    padding: 11px 15px;
+    border: 1px solid var(--primary);
+    border-radius: 9px;
+    color: #fff;
+    background: var(--primary);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.primary-button:hover {
+    filter: brightness(0.95);
+}
+
+.primary-button:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+.ai-status-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.ai-insights-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.ai-insight-card {
+    min-width: 0;
+    padding: 19px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: #fff;
+}
+
+.ai-insight-card h3 {
+    margin: 10px 0;
+}
+
+.ai-insight-card p {
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.ai-insight-card .evidence {
+    padding: 10px;
+    border-radius: 8px;
+    background: #f5f7fb;
+    color: var(--text);
+    font-size: 11px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.priority-label {
+    display: inline-block;
+    padding: 5px 8px;
+    border-radius: 20px;
+    background: #edf0ff;
+    color: #465cc2;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.priority-label.high {
+    background: #fff0ef;
+    color: #b42318;
+}
+
+.priority-label.low {
+    background: #eaf7ef;
+    color: #18794e;
+}
+
+.subsection-heading {
+    margin-top: 24px;
+}
+
+#anomaly-detection .explorer-filters {
+    margin: 18px 0;
+}
+
+#anomaly-detection .explorer-filters input,
+#anomaly-detection .explorer-filters select {
+    min-width: 0;
+}
+
+#anomaly-detection .table-wrapper {
+    margin-top: 12px;
+}
+
+@media (max-width: 800px) {
+    .ai-insights-grid {
+        grid-template-columns: 1fr;
+    }
+}

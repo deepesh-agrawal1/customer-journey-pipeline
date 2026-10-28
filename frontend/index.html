@@ -40,6 +40,12 @@
                 <a href="#data-quality" class="nav-link">
                     <span>✓</span> Data quality
                 </a>
+                <a href="#ai-insights" class="nav-link">
+                    <span>✦</span> AI Insights
+                </a>
+                <a href="#anomaly-detection" class="nav-link">
+                    <span>⚠</span> Anomaly Detection
+                </a>
             </nav>
 
             <div class="sidebar-footer">
@@ -351,17 +357,90 @@
                         <span class="feature-status">Connected</span>
                     </article>
 
-                    <article class="panel feature-card">
-                        <span class="feature-icon">!</span>
-                        <h3>Anomaly investigation</h3>
-                        <p>
-                            Inspect labelled anomalies and event ingestion
-                            delays when those datasets are available.
-                        </p>
-                        <span class="feature-status">Data generation pending</span>
-                    </article>
+                
                 </div>
             </section>
+            
+<section id="ai-insights" class="content-section">
+    <div class="section-heading">
+        <div>
+            <h2>AI-powered journey insights</h2>
+            <p>Understand journey friction and explore evidence-backed recommendations.</p>
+        </div>
+        <button id="refresh-ai-insights" class="secondary-button" type="button">
+            Generate insights
+        </button>
+    </div>
+
+    <article class="panel">
+        <div class="ai-status-row">
+            <span class="feature-status" id="ai-provider">Waiting for insights</span>
+            <span class="message" id="ai-insights-message">
+                Load insights from your analytics data.
+            </span>
+        </div>
+        <div id="ai-insights-list" class="ai-insights-grid"></div>
+    </article>
+</section>
+
+<section id="anomaly-detection" class="content-section">
+    <div class="section-heading">
+        <div>
+            <h2>Anomaly detection</h2>
+            <p>Review unusual journey events and evaluate detection results.</p>
+        </div>
+        <button id="run-anomaly-analysis" class="primary-button" type="button">
+            Run analysis
+        </button>
+    </div>
+
+    <article class="panel">
+        <h3>Evaluation results</h3>
+        <p id="anomaly-metrics-message" class="message">
+            Loading anomaly evaluation...
+        </p>
+        <div id="anomaly-metrics-table" class="table-wrapper"></div>
+        <h3 class="subsection-heading">Evaluation details</h3>
+        <div id="anomaly-evaluation-table" class="table-wrapper"></div>
+    </article>
+
+    <article class="panel">
+        <div class="section-heading">
+            <div>
+                <h3>Detected anomalies</h3>
+                <p id="anomaly-count-message" class="message">Loading anomalies...</p>
+            </div>
+        </div>
+
+        <div class="explorer-filters">
+            <label for="anomaly-severity">Severity</label>
+            <select id="anomaly-severity">
+                <option value="">All severities</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+            </select>
+
+            <label for="anomaly-type">Anomaly type</label>
+            <input id="anomaly-type" type="text" placeholder="e.g. delayed_ingestion">
+
+            <label for="anomaly-status">Status</label>
+            <select id="anomaly-status">
+                <option value="">All statuses</option>
+                <option value="open">Open</option>
+                <option value="investigating">Investigating</option>
+                <option value="resolved">Resolved</option>
+            </select>
+
+            <button id="filter-anomalies" class="secondary-button" type="button">
+                Apply filters
+            </button>
+        </div>
+
+        <p id="anomalies-message" class="message"></p>
+        <div id="anomalies-table" class="table-wrapper"></div>
+    </article>
+</section>
 
             <footer class="app-footer">
                 <span>Customer Journey Analytics</span>

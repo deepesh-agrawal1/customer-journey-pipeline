@@ -1,0 +1,5 @@
+anomaly_id,anomaly_type,severity,entity_type,entity_id,session_id,description,ground_truth_label,status
+ANM-000001,duplicate_event,medium,event,EVT-ANOM-DUP-000001,SES-2026-000040,Injected duplicate of an existing event.,1,detected
+ANM-000002,event_outside_session,high,event,EVT-ANOM-OUT-000001,SES-2026-000009,Injected event ten minutes after its session ended.,1,detected
+ANM-000003,delayed_ingestion,medium,event,EVT-ANOM-DELAY-000001,SES-2026-000101,Injected event ingested two hours after it occurred.,1,detected
+ANM-000004,checkout_abandonment,medium,session,SES-ANOM-000001,SES-ANOM-000001,Injected checkout session with no subsequent purchase.,1,detected

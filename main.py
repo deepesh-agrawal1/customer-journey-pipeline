@@ -43,6 +43,7 @@ def main():
         pages=pages,
         products=products,
         seed=seed,
+        target_event_count=config.get("target_event_count"),
     )
     # Convert records into DataFrames.
     customers_df = pd.DataFrame(customers)

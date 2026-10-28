@@ -1,8 +1,8 @@
 {
-  "seed": 42,
-  "customer_count": 50,
-  "session_count": 200,
-  "event_count": 549,
+  "seed": 20261022,
+  "customer_count": 5000,
+  "session_count": 10000,
+  "event_count": 200000,
   "page_count": 6,
   "product_count": 20,
   "files": [

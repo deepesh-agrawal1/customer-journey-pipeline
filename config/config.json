@@ -1,8 +1,9 @@
 {
-  "seed": 42,
+  "seed": 20261022,
   "year": 2026,
-  "customer_count": 50,
-  "session_count": 200,
+  "customer_count": 5000,
+  "session_count": 10000,
+  "target_event_count": 200000,
   "domain": "generic_digital_journey",
   "storage_format": "csv",
   "timezone": "UTC",

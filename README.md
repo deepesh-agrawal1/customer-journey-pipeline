@@ -1,291 +1,289 @@
-# Customer Journey Analytics Platform
+# Customer Journey Data Platform
 
-A data-driven analytics platform designed to analyze digital customer journeys, identify funnel drop-offs, measure conversion performance, and explore customer behavior across sessions.
+A synthetic customer journey data platform designed to generate, validate, and analyze digital customer interactions. The project models customer sessions, behavioral events, conversion outcomes, and funnel performance to help identify journey drop-offs and potential friction points.
 
-The project combines a Python data-processing pipeline, a FastAPI backend, and an interactive web dashboard to transform customer journey events into actionable insights.
-
-## Live Demo
-
-**Frontend Dashboard:** [View Customer Journey Analytics](https://deepesh-agrawal1.github.io/customer-journey-pipeline/)
-
-**GitHub Repository:** [Customer Journey Pipeline](https://github.com/deepesh-agrawal1/customer-journey-pipeline)
-
-> The frontend can be explored as a static website. To load live analytical data and use the complete dashboard functionality, run the backend locally using the instructions below.
+The platform currently includes a configurable Python data generator, CSV-based data storage, data validation, journey outcome classification, and analytics. A FastAPI backend and web interface support the next stage of the project.
 
 ## Project Overview
 
-Understanding where customers abandon their journeys is essential for improving digital experiences and conversion rates.
+Digital customer journeys often span multiple interactions before a customer completes a purchase, abandons a cart, or contacts support. Analyzing these journeys requires structured event data, consistent identifiers, reliable validation, and meaningful analytics.
 
-This project generates and processes synthetic customer journey data, validates records, derives journey outcomes, and presents the resulting analytics through an interactive dashboard.
+This project creates reproducible synthetic journey data that can be used to test data pipelines and develop customer journey analytics without depending on real customer information.
 
-The platform helps answer questions such as:
+### Current Highlights
 
-- How many customer sessions result in a purchase?
-- At which stage do customers drop off?
-- How do conversion rates differ across devices?
-- How many sessions result in support contact?
-- Which pages and products receive the most engagement?
-- How do customer journey metrics change over time?
-- Which records fail data quality validation?
+- Generates synthetic customers, sessions, events, pages, and products.
+- Supports configurable customer and session counts.
+- Supports deterministic generation using a configurable random seed.
+- Produces consistent, structured identifiers.
+- Validates generated records and reports quarantined data.
+- Derives one journey outcome per session.
+- Calculates conversion, support contact, abandonment, and no-conversion metrics.
+- Stores raw data as CSV files.
+- Includes automated tests using `pytest`.
 
-## Key Features
+## Current Dataset
 
-### 1. Customer Journey Funnel
-- Visualizes progression through journey stages.
-- Tracks page views, product interest, and purchases.
-- Identifies conversion drop-offs between stages.
+The following results were produced by the latest successful run.
 
-### 2. Journey Outcome Analysis
-- Categorizes sessions by their resulting outcomes.
-- Tracks conversions, support-required journeys, and non-conversion outcomes.
-- Displays outcome counts and percentages.
+| Dataset / Metric | Current Result |
+|---|---:|
+| Customers | 5,000 |
+| Sessions | 10,000 |
+| Journey events | 200,000 |
+| Journey outcomes | 10,000 |
+| Pages | 6 |
+| Products | 20 |
+| Validated events | 200,000 |
+| Quarantined events | 0 |
 
-### 3. Device Performance
-- Compares sessions across desktop, mobile, and tablet devices.
-- Measures device-level conversion performance.
+### Journey Metrics
 
-### 4. Page and Product Analytics
-- Analyzes engagement with pages and products.
-- Provides performance summaries based on recorded journey events.
+| Metric | Result |
+|---|---:|
+| Converted sessions | 2,508 |
+| Conversion rate | 25.08% |
+| Sessions involving support | 2,513 |
+| Support contact rate | 25.13% |
+| Abandoned sessions | 1,220 |
+| Cart abandonment rate | 12.20% |
+| Sessions with no conversion | 3,759 |
+| No-conversion rate | 37.59% |
 
-### 5. Time-Based Trends
-- Groups journey metrics by day, week, or month.
-- Helps identify changes in traffic and conversion behavior.
-
-### 6. Session Explorer
-- Searches and filters customer sessions.
-- Supports exploration of individual session event timelines.
-
-### 7. Data Quality Monitoring
-- Validates required fields and identifiers.
-- Checks foreign-key relationships and session boundaries.
-- Separates valid records from quarantined records.
+These are results from the current synthetic dataset. They are not real-world customer benchmarks.
 
 ## Technology Stack
 
-| Component | Technologies |
-|---|---|
-| Frontend | HTML, CSS, JavaScript |
-| Visualization | Chart.js |
-| Backend | Python, FastAPI |
-| Data processing | Pandas, NumPy |
-| API server | Uvicorn |
-| Data storage | CSV files |
-| Testing | Pytest |
-| Version control | Git and GitHub |
-| Frontend hosting | GitHub Pages |
-| Backend hosting | Render (deployment configuration available in the repository) |
-
-## Architecture
-
-```text
-Synthetic / Raw Journey Data
-            |
-            v
-   Data Validation Pipeline
-            |
-            v
-  Staged and Curated CSV Data
-            |
-            v
-     FastAPI Backend
-            |
-            v
-       REST Endpoints
-            |
-            v
- Interactive Web Dashboard
-   HTML / CSS / JavaScript
-            |
-            v
- Funnel, Outcomes, Trends,
- Devices, Sessions and Quality
-```
-
-The frontend communicates with the backend through REST APIs. The backend reads the processed CSV datasets and returns aggregated analytics as JSON.
+- **Language:** Python
+- **Data processing:** Pandas and Python data-processing modules
+- **Backend:** FastAPI
+- **Storage:** CSV files
+- **Testing:** pytest
+- **Frontend:** HTML, CSS, JavaScript
+- **Version control:** Git and GitHub
 
 ## Project Structure
 
 ```text
 customer-journey-pipeline/
-├── src/
-│   ├── api.py
-│   ├── generator.py
-│   ├── validator.py
-│   ├── standardizer.py
-│   ├── pipeline.py
-│   ├── analytics.py
-│   ├── metrics.py
-│   └── funnel_analysis.py
-├── frontend/
-│   ├── index.html
-│   ├── style.css
-│   └── app.js
+├── config/
+│   └── config.json
 ├── data/
 │   ├── raw/
-│   ├── staged/
-│   ├── curated/
-│   ├── quarantine/
-│   ├── ground_truth/
-│   └── reports/
+│   ├── processed/
+│   └── quarantine/
+├── src/
+│   ├── generator.py
+│   ├── validator.py
+│   ├── pipeline.py
+│   ├── standardizer.py
+│   ├── analytics.py
+│   ├── metrics.py
+│   ├── funnel_analysis.py
+│   └── api.py
 ├── tests/
-├── docs/
+├── main.py
 ├── requirements.txt
 └── README.md
 ```
 
-## Running the Complete Project Locally
+*The structure above describes the main project components; additional files and directories may exist in the repository.*
 
-### Prerequisites
+## Getting Started
 
-- Python 3.10 or later, compatible with the dependencies in `requirements.txt`
-- Git
-- A modern web browser
-
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/deepesh-agrawal1/customer-journey-pipeline.git
 cd customer-journey-pipeline
 ```
 
-### 2. Create a virtual environment
+### 2. Create a Virtual Environment
 
-**Windows:**
+On Windows:
 
-```cmd
+```bash
 python -m venv .venv
 .venv\Scripts\activate
 ```
 
-**Linux/macOS:**
+On Linux or macOS:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-### 3. Install dependencies
+### 3. Install Dependencies
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-### 4. Verify the datasets
+### 4. Configure the Generator
 
-Ensure the repository contains the CSV files required by the API in `data/staged` and `data/curated`.
+Update `config/config.json` to change the dataset size and generation settings.
 
-If those datasets are not included in the repository, generate or process them using the project's pipeline before starting the API.
+Example configuration:
 
-### 5. Start the backend
+```json
+{
+  "seed": 20261022,
+  "year": 2026,
+  "customer_count": 5000,
+  "session_count": 10000,
+  "target_event_count": 200000,
+  "domain": "generic_digital_journey",
+  "storage_format": "csv",
+  "timezone": "UTC",
+  "session_timeout_minutes": 30
+}
+```
 
-From the repository root, run:
+The `target_event_count` setting controls the requested number of generated events when supported by the current generator. Keep it at or above the session count because each generated session requires at least one event.
+
+### 5. Generate and Validate Data
+
+Run the pipeline:
 
 ```bash
-python -m uvicorn src.api:app --reload
+python main.py
 ```
 
-The backend should be available at:
+The pipeline generates the configured dataset, writes the raw output files, performs validation, and prints journey metrics.
 
-- API: http://127.0.0.1:8000
-- Interactive API documentation: http://127.0.0.1:8000/docs
-
-### 6. Configure and start the frontend
-
-Open `frontend/app.js` and check the API base URL used by the dashboard. For local execution, it should point to:
-
-```javascript
-const API_BASE_URL = "http://127.0.0.1:8000";
-```
-
-If the file already defines this variable, update the existing definition rather than adding a duplicate. If the project uses a different configuration pattern, update the existing API URL setting accordingly.
-
-In a second terminal, run:
-
-```cmd
-python -m http.server 5500 --directory frontend
-```
-
-Open the dashboard at:
-
-http://127.0.0.1:5500
-
-For local development, configure the backend's CORS middleware to allow `http://127.0.0.1:5500`.
-
-## API Endpoints
-
-The backend exposes the following endpoints:
-
-| Endpoint | Purpose |
-|---|---|
-| `GET /api/health` | Health check |
-| `GET /api/metrics` | Overall journey metrics |
-| `GET /api/funnel` | Funnel stage analysis |
-| `GET /api/quality` | Data quality summary |
-| `GET /api/outcomes` | Journey outcome distribution |
-| `GET /api/devices` | Device-level performance |
-| `GET /api/performance` | Page and product performance |
-| `GET /api/trends?interval=day` | Time-based analytics |
-| `GET /api/sessions` | Searchable and filterable sessions |
-| `GET /api/sessions/{session_id}/events` | Individual session event timeline |
-
-Interactive API documentation is available at `/docs` when the backend is running.
-
-## Running Tests
-
-Run the automated test suite from the repository root:
+### 6. Run Automated Tests
 
 ```bash
 python -m pytest -q
 ```
 
-The project test suite covers validation behavior, including duplicate identifiers, invalid product data, customer/session consistency, and event timestamps.
+Use the test results to verify that changes to the generator, validation rules, and analytics do not break existing functionality.
+
+## Data Model
+
+The current generator works with these primary entities:
+
+| Entity | Purpose |
+|---|---|
+| Customer | Represents a synthetic customer. |
+| Session | Represents a customer browsing or interaction session. |
+| JourneyEvent | Records an interaction within a session. |
+| Page | Represents a page in the digital journey. |
+| Product | Represents a product that can be viewed or purchased. |
+| JourneyOutcome | Classifies the final outcome of a session. |
+
+Additional entities, such as carts, orders, support tickets, and experiments, can extend the model as the platform develops.
+
+### Identifier Conventions
+
+Identifiers use predictable, zero-padded formats to make relationships easy to inspect.
+
+| Entity | Example |
+|---|---|
+| Customer | `CUS-000001` |
+| Session | `SES-2026-000001` |
+| Event | `EVT-SES-2026-000001-000001` |
+| Page | `PAG-000001` |
+| Product | `PRD-000001` |
+| Outcome | `OUT-SES-2026-000001` |
+
+The event identifier includes the session identifier and an event position. Exact formats should remain consistent with the implementation.
 
 ## Data Validation
 
-The validation pipeline checks:
+The validation stage checks generated records against the project's schema and integrity rules.
 
-- Required columns and missing values.
-- Duplicate customer, session, event, page, and product identifiers.
-- Valid customer and session references.
-- Event customer consistency with the associated session.
-- Event timestamps within session boundaries.
-- Valid event sequence numbers.
-- Page and product references when reference datasets are available.
-- Product categories, prices, currencies, and lifecycle status.
+Current validation includes checks for:
 
-Invalid records are separated into quarantine outputs instead of being treated as valid analytical data.
+- Required columns and fields.
+- Identifier consistency and uniqueness where required.
+- Valid event types and allowed values.
+- References between events, sessions, customers, pages, and products.
+- Event timestamps falling within their associated session boundaries.
+- Valid records versus quarantined records.
 
-## Dataset and Demonstration Notes
+Invalid records should be investigated rather than silently treated as valid analytical data.
 
-The project uses synthetic customer journey data for demonstration and testing. The results represent the generated dataset and should not be interpreted as real customer or business performance.
+## Journey Analytics
 
-The pipeline is designed around CSV-based processing, allowing evaluators to inspect the generated datasets and reproduce the analytics locally.
+The platform derives session outcomes and calculates summary metrics to help understand customer behavior.
 
-## Limitations
+### Outcomes
 
-- The current implementation uses CSV files rather than a production database.
-- The demonstration dataset is synthetic.
-- Backend-dependent dashboard features require the API and datasets to be available.
-- The public frontend and local backend must use compatible API URLs and CORS settings.
+The current analytics classifies sessions into outcome categories such as:
 
-## Future Improvements
+- **Converted:** A qualifying purchase occurred.
+- **Support required:** The session involved a support interaction and did not qualify for a higher-priority outcome.
+- **Abandoned:** The session was classified as abandoned.
+- **No conversion:** No qualifying conversion or other selected outcome occurred.
 
-- Add persistent database storage.
-- Introduce larger and more diverse journey datasets.
-- Improve cross-channel identity resolution and consent-aware linking.
-- Detect anomalous behavior, event delays, and broken journey steps.
-- Add advanced segmentation and cohort analysis.
-- Containerize the application for reproducible deployment.
-- Add automated deployment and monitoring workflows.
+Outcome precedence and the precise abandonment definition are governed by the implementation and should be verified against the tests.
 
-## Author
+### Funnel Analysis
 
-**Deepesh Agrawal**
+A digital journey can be analyzed through stages such as:
 
-GitHub: [deepesh-agrawal1](https://github.com/deepesh-agrawal1)
+1. Browse
+2. Product interest
+3. Cart intent
+4. Purchase
 
-Portfolio: [deepesh.codes](https://deepesh.codes)
+Funnel analysis measures how many sessions reach each stage and how many continue to the next stage. This can reveal where users leave the journey and where further investigation may be useful.
 
-//For evaluation purpose all the code is written through vibe coding so u can see many unrequired code which can be optimized and written using short and smaller way
+## Reproducibility
+
+The generator uses a configurable random seed. Keeping the seed and configuration fixed helps make generated data reproducible.
+
+The pipeline also creates a run manifest. Retain the configuration, manifest, and test results when comparing different dataset versions.
+
+For reproducible experiments:
+
+1. Keep the random seed unchanged.
+2. Record changes to the configuration.
+3. Regenerate the dataset.
+4. Run validation and automated tests.
+5. Compare the resulting metrics.
+
+## Roadmap
+
+The following are planned improvements and should not be interpreted as completed features unless implemented and tested.
+
+- [ ] Scale generation to 100,000 sessions and approximately 2 million events.
+- [ ] Add web, app, and support channel interactions.
+- [ ] Separate event occurrence timestamps from ingestion timestamps.
+- [ ] Implement consent-aware identity resolution.
+- [ ] Add explicit ground-truth labels for synthetic journey problems.
+- [ ] Generate duplicate purchase events and other data-quality edge cases.
+- [ ] Simulate bot traffic and incorrect identity merges.
+- [ ] Analyze funnel drop-offs by channel, device, and journey characteristics.
+- [ ] Add friction and anomaly detection.
+- [ ] Expand automated tests for edge cases and data integrity.
+- [ ] Improve the web interface for exploring metrics and generated datasets.
+
+## Running the API
+
+The project includes a FastAPI application in `src/api.py`. The exact startup command depends on the application's module and ASGI object names.
+
+If the application exposes an `app` object in `src/api.py`, try:
+
+```bash
+uvicorn src.api:app --reload
+```
+
+The interactive API documentation is typically available at:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+If the application uses a different ASGI object or startup configuration, adjust the command accordingly.
+
+## Deployment
+
+- **Source code:** [GitHub Repository](https://github.com/deepesh-agrawal1/customer-journey-pipeline)
+- **Frontend:** [GitHub Pages](https://deepesh-agrawal1.github.io/customer-journey-pipeline/)
+- **API deployment:** [Render Service](https://customer-journey-pipeline.onrender.com)
+
+Deployment availability and API endpoints depend on the current hosting configuration.
 

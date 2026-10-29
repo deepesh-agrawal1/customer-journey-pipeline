@@ -41,17 +41,19 @@ app = FastAPI(
     version="1.2.0",
 )
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://127.0.0.1:5500",
-        "http://localhost:5500",
         "https://deepesh-agrawal1.github.io",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500",
     ],
     allow_credentials=False,
-    allow_methods=["GET"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
+
 app.include_router(health_router)
 app.include_router(overview_router)
 app.include_router(analytics_router)

@@ -3,7 +3,7 @@ name: Deploy Customer Journey Frontend
 
 on:
   push:
-    branches: ["main"]
+    branches: ["Deploy"]
     paths:
       - "frontend/**"
       - ".github/workflows/static.yml"
